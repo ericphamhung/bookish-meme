@@ -1,0 +1,122 @@
+#Make sure comments are excluded!
+#  Done!
+#TEST
+
+
+# SELECT COUNT(*) FROM
+
+<start> ::= <query>
+
+<query> ::= <select>  <sellist>
+            <from>   <table_name>
+		        <modifyop>
+
+<sellist>  ::=  <colname_list> |
+                <colname_list> <comma> <colname_pattern> |
+                <colname_list> <comma> <select_agg> |
+                <select_agg> |
+                <select_agg> <comma> <select_agg> |
+                <select_agg> <comma> <colname_list>
+
+
+<colname_list> ::=  <star> |
+                    <colname_pattern> |
+                    <colname_pattern> <comma> <colname_pattern> |
+                    <distinct> <colname_pattern>
+
+
+
+<select_agg> ::=    <simple_agg> <lbracket> <colname_pattern> <rbracket> |
+                    <count> <lbracket> <colname_pattern> <rbracket> |
+                    <count> <lbracket> <colname_list> <rbracket>
+
+<simple_agg> ::= <min> | <max> | <avg>
+
+<modifyop> ::= <where> <condition> <orderop> | 
+               <gb> <colname_list> <orderop>  |
+               <gb> <colname_list> <having> <condition> <orderop> |
+               <orderop>
+
+
+
+
+<orderop> ::=   <ob> <colname_list> <ascdsc> <limitop> |
+                <ob> <simple_agg> <lbracket> <colname_pattern>  <rbracket> <ascdsc> <limitop> |
+                <ascdsc> <limitop>
+
+
+<condition> ::=     <condition3> <and> <condition3> |
+                    <condition3> <or> <condition3> |
+                    <condition3>
+
+<condition3> ::= <colname_pattern> <comp> <value_pattern> |
+                 <colname_pattern> <in> <lbracket> <subquery> <rbracket> |
+                 <colname_pattern> <like> <like_pattern> |
+                 <colname_pattern> <between> <value_pattern> <and> <value_pattern>
+
+
+<subquery> ::=  <select>  <sellist>
+                <from>   <table_name>
+		        <submodifyop>
+
+<submodifyop> ::= <where> <subcondition> <orderop> | <gb> <colname_list> <orderop> | <gb> <colname_list> <having> <subcondition> <orderop>
+
+
+<subcondition> ::=  <subcondition3> <and> <subcondition3> |
+                     <subcondition3> <or> <subcondition3> |
+                    <subcondition3>
+
+<subcondition3> ::= <colname_pattern> <comp> <value_pattern> |
+                    <colname_pattern> <like> <like_pattern> |
+                    <colname_pattern> <between> <value_pattern> <and> <value_pattern>
+
+
+<limitop> ::= <limit> <int_pattern> |
+              <empty_pattern>
+
+
+<ascdsc> ::=    <asc> |
+                <desc> |
+                <empty_pattern>
+
+<comp> ::=  <eq> | <lt> | <le> | <ge> | <gt> | <ne1> | <ne2>
+
+
+<select> ::= SELECT
+<from> ::= FROM
+<where> ::= WHERE
+<gb> ::= GROUP BY
+<having>::= HAVING
+<ob> ::= ORDER BY
+<limit> ::=  LIMIT
+<and> ::= AND
+<or> ::= OR
+<like> ::= LIKE
+<in> ::= IN
+<between> ::= BETWEEN
+<asc> ::= ASC
+<desc> ::= DESC
+<min> ::= MIN
+<max> ::= MAX
+<avg> ::= AVG
+<count> ::= COUNT
+<distinct> ::= DISTINCT
+<comma> ::= ,
+<star> ::= *
+<eq> ::= =
+<lt> ::= <
+<le> ::= <=
+<ge> ::= >=
+<gt> ::= >
+<ne1> ::= <>
+<ne2> ::= !=
+<lbracket> ::= (
+<rbracket> ::= )
+
+
+<table_name> ::= [[table_name]]
+<colname_pattern> ::= [[colname_pattern]]
+<value_pattern> ::= [[value_pattern]]
+<empty_pattern> ::= [[empty_pattern]]
+<int_pattern> ::= [[int_pattern]]
+<like_pattern>::= [[like_pattern]]

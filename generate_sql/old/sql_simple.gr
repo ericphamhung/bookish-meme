@@ -1,0 +1,58 @@
+#Make sure comments are excluded!
+#  Done!
+#TEST
+
+
+# SELECT COUNT(*) FROM
+
+<start> ::= <query>
+
+<query> ::= SELECT  <sellist>
+            FROM   [[table_name]]
+		        <modifyop>
+
+
+<sellist>  ::=  <colname_list> |
+                <colname_list>, <sellist> |
+                <select_agg> |
+                <select_agg>, <sellist>
+
+
+<select_agg> ::=   <simple_agg>([[colname_pattern]]) |
+                   COUNT(DISTINCT [[colname_pattern]])|
+                   COUNT(<colname_list>)
+
+<simple_agg> ::= MIN | MAX | AVG | COUNT
+
+
+
+<modifyop> ::= <whereop> | <groupop> | <orderop>
+
+<whereop> ::= WHERE <condition> <orderop>
+
+<groupop> ::=   GROUP BY <colname_list> <orderop> |
+                GROUP BY <colname_list> HAVING <condition> <orderop>
+
+<orderop> ::=   ORDER BY <colname_list> <ascdsc> <limitop> |
+                ORDER BY <simple_agg> ([[colname_pattern]]) <ascdsc> <limitop>|
+                <ascdsc> <limitop>
+
+<ascdsc> ::=    ASC |
+                DESC |
+                [[empty_pattern]]
+
+<limitop> ::=   LIMIT [[num_pattern]] |
+              [[empty_pattern]]
+
+#LIKE not a regular comp!
+<condition> ::=  <condition> AND <condition>   |
+                 <condition> OR <condition>   |
+                 <colname> <comp> [[value_pattern]]	   |
+                 <colname> IN ( <query> )    |
+                 <colname> LIKE [[like_pattern]]
+
+<colname_list> ::=  * |
+                    [[colname_pattern]], <colname_list> |
+                    [[colname_pattern]]
+
+<comp> ::=  = | < | <= | > | >= | <>

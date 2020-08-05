@@ -1,0 +1,191 @@
+#Make sure comments are excluded!
+#  Done!
+#TEST
+
+
+# SELECT COUNT(*) FROM
+
+<start> ::= <query>
+
+<query> ::= <select>  <sellist>
+            <from>   <table_name>
+		        <modifyop>
+
+<sellist>  ::=  <sellist1> |
+                <sellist2> |
+                <sellist3> |
+                <sellist4>
+
+<sellist1> ::= <colname_list>
+<sellist2> ::= <colname_list> <comma> <sellist5>
+<sellist3> ::= <select_agg>
+<sellist4> ::= <select_agg> <comma> <sellist5>
+<sellist5> ::= <colname_pattern> | <select_agg>
+
+
+<colname_list> ::=  <colname_list1> |
+                    <colname_list2> |
+                    <colname_list3> |
+                    <colname_list4>
+
+
+<colname_listg> ::=  <colname_list2> |
+                    <colname_list3> |
+                    <colname_list4>
+
+<colname_list1> ::= <star>
+<colname_list2> ::= <colname_pattern>
+<colname_list3> ::= <colname_pattern> <comma> <colname_pattern>
+<colname_list4> ::= <distinct> <colname_pattern>
+
+
+<select_agg> ::=    <select_agg1> |
+                    <select_agg2> |
+                    <select_agg3>
+
+<select_agg1> ::= <simple_agg> <lbracket> <colname_pattern> <rbracket>
+<select_agg2> ::= <count> <lbracket> <colname_pattern> <rbracket>
+<select_agg3> ::= <count> <lbracket> <colname_list> <rbracket>
+
+
+<simple_agg> ::= <min> | <max> | <avg>
+
+<modifyop> ::= <whereop> | <groupop> | <orderop>
+
+<whereop> ::=   <where> <condition> <orderop>
+
+<groupop> ::=   <groupop1> |
+                <groupop2>
+
+
+
+<groupop1> ::= <gb> <colname_listg> <orderop>
+<groupop2> ::= <gb> <colname_listg> <having> <condition> <orderop>
+
+
+<orderop> ::=   <orderop1> |
+                <orderop2> |
+                <orderop3>
+
+<orderop1> ::= <ob> <colname_list> <ascdsc> <limitop>
+<orderop2> ::= <ob> <simple_agg> <lbracket> <colname_pattern>  <rbracket> <ascdsc> <limitop>
+<orderop3> ::= <ascdsc> <limitop>
+
+
+# <loopcond> ::= <loopcondand> | <loopcondor> | <nonloopcond>
+# <loopcondand> ::= <loopcondand> and <nonloopcond>
+# <loopcondor> ::= <loopcondand> or <nonloopcond>
+#
+# <nonloopcond> ::=   <condition3> |
+#                     <condition4> |
+#                     <condition5> |
+#                     <condition6>
+# <condition> ::=     <loopcond> |
+#                     <nonloopcond>
+
+<condition> ::=     <condition1> |
+                    <condition2> |
+                    <condition3>
+
+
+<condition1> ::= <condition3> <and> <condition3>
+<condition2> ::= <condition3> <or> <condition3>
+<condition3> ::= <condition4> |
+                 <condition5> |
+                 <condition6> |
+                 <condition7> |
+                 <condition8>
+
+<condition4> ::= <colname_pattern> <comp> <value_pattern>
+<condition5> ::= <colname_pattern> <in> <lbracket> <subquery> <rbracket>
+<condition6> ::= <colname_pattern> <like> <like_pattern>
+<condition7> ::= <colname_pattern> <between> <value_pattern> <and> <value_pattern>
+<condition8> ::= <colname_pattern> <comp> <avg> <lbracket> <colname_pattern> <rbracket>
+
+<subquery> ::=  <select>  <sellist>
+                <from>   <table_name>
+		            <submodifyop>
+
+<submodifyop> ::= <subwhereop> | <subgroupop> | <orderop>
+
+<subwhereop> ::=    <where> <subcondition> <orderop>
+
+<subgroupop> ::=    <subgroupop1> |
+                    <subgroupop2>
+
+<subgroupop1> ::= <gb> <colname_list> <orderop>
+<subgroupop2> ::= <gb> <colname_list> <having> <subcondition> <orderop>
+
+<subcondition> ::=  <subcondition1> |
+                    <subcondition2> |
+                    <subcondition3>
+
+<subcondition1> ::= <subcondition3> <and> <subcondition3>
+<subcondition2> ::= <subcondition3> <or> <subcondition3>
+<subcondition3> ::= <subcondition4> |
+                    <subcondition5> |
+                    <subcondition6> |
+                    <subcondition8>
+
+#<subcondition1> ::= <subcondition> <and> <subcondition>
+#<subcondition2> ::= <subcondition> <or> <subcondition>
+<subcondition4> ::= <colname_pattern> <comp> <value_pattern>
+<subcondition5> ::= <colname_pattern> <like> <like_pattern>
+<subcondition6> ::= <colname_pattern> <between> <value_pattern> <and> <value_pattern>
+<subcondition8> ::= <colname_pattern> <comp> <avg> <lbracket> <colname_pattern> <rbracket>
+
+<limitop> ::= <limitop1> |
+              <empty_pattern>
+
+<limitop1> ::=  <limit> <int_pattern>
+
+<ascdsc> ::=    <asc> |
+                <desc> |
+                <empty_pattern>
+
+<comp> ::=  <eq> | <lt> | <le> | <ge> | <gt> | <ne1> | <ne2>
+
+
+<select> ::= SELECT
+<from> ::= FROM
+<where> ::= WHERE
+<gb> ::= GROUP BY
+<gp> ::= GROUP
+<op> ::= ORDER
+<bb> ::= BY
+<having>::= HAVING
+<ob> ::= ORDER BY
+<limit> ::=  LIMIT
+<and> ::= AND
+<or> ::= OR
+<like> ::= LIKE
+<in> ::= IN
+<between> ::= BETWEEN
+<asc> ::= ASC
+<desc> ::= DESC
+<min> ::= MIN
+<max> ::= MAX
+<avg> ::= AVG
+<count> ::= COUNT
+<sum> ::= SUM
+<distinct> ::= DISTINCT
+<comma> ::= ,
+<star> ::= *
+<eq> ::= =
+<lt> ::= <
+<le> ::= <=
+<ge> ::= >=
+<gt> ::= >
+<ne1> ::= <>
+<ne2> ::= !=
+<lbracket> ::= (
+<rbracket> ::= )
+
+
+<table_name> ::= [[table_name]]
+<colname_pattern> ::= [[colname_pattern]]
+<value_pattern> ::= [[value_pattern]]
+<empty_pattern> ::= [[empty_pattern]]
+<int_pattern> ::= [[int_pattern]]
+<like_pattern>::= [[like_pattern]]
+<string_patttern> ::= [[string_pattern]]

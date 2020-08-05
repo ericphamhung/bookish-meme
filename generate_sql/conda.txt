@@ -1,0 +1,7 @@
+conda create -n generatesql python=3.7
+conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
+conda install cython matplotlib nltk numpydoc tensorboard flask flask-cors tqdm boto3 moto gevent requests flaky sqlparse jsonpickle h5py scipy pytz unidecode flaky responses  ftfy  
+conda install -c conda-forge parsimonious editdistance word2number awscli overrides conllu scikit-learn
+conda install -c spacy spacy
+#possibly?  conda install -c anaconda gcc 
+pip install allennlp

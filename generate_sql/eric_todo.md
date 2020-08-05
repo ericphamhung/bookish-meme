@@ -1,0 +1,3 @@
+Please:
+ - Add a between operation to the new sql_simple.bnf
+    - realized that we would like to ideally match the syntax of the data....
